@@ -1,0 +1,10 @@
+# dsh-wallpaper-player bundle patch.
+#
+# One host row: scans the local Wallpaper Engine installation (Steam app
+# 431960), serves the video files with HTTP Range support and the preview
+# images, and exposes a JSON inventory at /wallpaper-player/library.
+# The browser half (dsh.client in package.json) adds the settings page.
+
+- insert:
+    - id: wallpaper-player
+      name: 'dsh-wallpaper-player'

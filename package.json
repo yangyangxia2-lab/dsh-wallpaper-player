@@ -1,0 +1,51 @@
+{
+  "name": "dsh-wallpaper-player",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Browse and play local Wallpaper Engine video and image wallpapers from a DSH settings page.",
+  "type": "module",
+  "license": "MIT",
+  "author": "dsh-wallpaper-player contributors",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "wallpaper-engine",
+    "wallpaper",
+    "video",
+    "player"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "client.js",
+    "cordis.patch.yml",
+    "locale",
+    "icon.svg",
+    "assets",
+    "LICENSE",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": ["@deepseek-ai/dsh-client-runtime"]
+    }
+  },
+  "icon": "icon.svg",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "check": "node --check index.js && node --check client.js && node --check lib/routes.js && node --check lib/library.js && node --check lib/steam.js"
+  }
+}

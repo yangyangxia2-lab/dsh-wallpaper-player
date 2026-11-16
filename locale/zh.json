@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "title": "壁纸播放器",
+    "description": "浏览本地 Wallpaper Engine 壁纸库，在 DSH 内播放视频壁纸，并查看场景、网页和图片壁纸的预览。"
+  },
+  "nav": {
+    "label": "壁纸播放器"
+  }
+}

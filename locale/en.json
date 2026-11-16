@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "title": "Wallpaper player",
+    "description": "Browse the local Wallpaper Engine library and play its video wallpapers inside DSH, with previews for scene, web, and image wallpapers."
+  },
+  "nav": {
+    "label": "Wallpaper player"
+  }
+}
