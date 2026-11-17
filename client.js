@@ -214,50 +214,54 @@ window.__ModuleLoader__.load({
       return h(
         'div',
         { className: 'dwp-player', ref: wrapRef },
-        video
-          ? h('video', {
-              ref: videoRef,
-              key: item.id,
-              className: 'dwp-video',
-              src: item.mediaUrl,
-              poster: item.previewUrl ?? undefined,
-              preload: 'metadata',
-              playsInline: true,
-              loop,
-              muted,
-              onClick: onToggle,
-              onDoubleClick: onFullscreen,
-              onLoadedMetadata: onLoaded,
-              onTimeUpdate: onTime,
-              onPlay,
-              onPause,
-              onError,
-              'aria-label': item.title,
-            })
-          : visual
-            ? h(
-                'div',
-                { className: 'dwp-scene' },
-                item.previewUrl
-                  ? h('img', { className: 'dwp-poster', src: item.previewUrl, alt: item.title })
-                  : h('div', { className: 'dwp-loading' }, t('state.noPreview')),
-                h(
+        h(
+          'div',
+          { className: 'dwp-stage' },
+            video
+            ? h('video', {
+                ref: videoRef,
+                key: item.id,
+                className: 'dwp-video',
+                src: item.mediaUrl,
+                poster: item.previewUrl ?? undefined,
+                preload: 'metadata',
+                playsInline: true,
+                loop,
+                muted,
+                onClick: onToggle,
+                onDoubleClick: onFullscreen,
+                onLoadedMetadata: onLoaded,
+                onTimeUpdate: onTime,
+                onPlay,
+                onPause,
+                onError,
+                'aria-label': item.title,
+              })
+            : visual
+              ? h(
                   'div',
-                  { className: 'dwp-scene-overlay' },
-                  h('span', { className: 'dwp-note' }, t(item.kind === 'web' ? 'player.webNote' : 'player.sceneNote')),
-                ),
+                  { className: 'dwp-scene' },
+                  item.previewUrl
+                    ? h('img', { className: 'dwp-poster', src: item.previewUrl, alt: item.title })
+                    : h('div', { className: 'dwp-loading' }, t('state.noPreview')),
+                  h(
+                    'div',
+                    { className: 'dwp-scene-overlay' },
+                    h('span', { className: 'dwp-note' }, t(item.kind === 'web' ? 'player.webNote' : 'player.sceneNote')),
+                  ),
+                )
+              : h('div', { className: 'dwp-loading' }, '—'),
+
+          video && !playing && !error
+            ? h(
+                'button',
+                { type: 'button', className: 'dwp-center-play', onClick: onToggle, title: t('player.play'), 'aria-label': t('player.play') },
+                h(Icon, { d: ICONS.play, size: 34 }),
               )
-            : h('div', { className: 'dwp-loading' }, '—'),
+            : null,
 
-        video && !playing && !error
-          ? h(
-              'button',
-              { type: 'button', className: 'dwp-center-play', onClick: onToggle, title: t('player.play'), 'aria-label': t('player.play') },
-              h(Icon, { d: ICONS.play, size: 34 }),
-            )
-          : null,
-
-        error ? h('div', { className: 'dwp-error-box' }, h('span', { className: 'dwp-error' }, t('player.unsupported'))) : null,
+          error ? h('div', { className: 'dwp-error-box' }, h('span', { className: 'dwp-error' }, t('player.unsupported'))) : null,
+        ),
 
         h(
           'div',
@@ -685,7 +689,8 @@ window.__ModuleLoader__.load({
         color:var(--dsw-alias-label-primary,#e8ecf5); background:var(--dsw-alias-bg-layer-2,rgba(255,255,255,.05));
         border:1px solid var(--dsw-alias-border-l1,rgba(255,255,255,.1)); }
       .dwp-refresh:hover { background:var(--dsw-alias-interactive-bg-hover,rgba(255,255,255,.09)); }
-      .dwp-player { position:relative; aspect-ratio:16/9; border-radius:10px; overflow:hidden; background:#05070c;
+      .dwp-player { display:flex; flex-direction:column; gap:8px; }
+      .dwp-stage { position:relative; aspect-ratio:16/9; border-radius:10px; overflow:hidden; background:#05070c;
         border:1px solid var(--dsw-alias-border-l1,rgba(255,255,255,.09)); }
       .dwp-video { display:block; width:100%; height:100%; object-fit:contain; background:#000; }
       .dwp-scene { position:absolute; inset:0; }
@@ -701,7 +706,7 @@ window.__ModuleLoader__.load({
       .dwp-error { color:var(--dsw-alias-state-error-primary,#f87171); font-size:12px; }
       .dwp-loading { display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#8b93a7; font-size:12px; }
       .dwp-controls { display:flex; flex-direction:column; gap:6px; }
-      .dwp-progress { width:100%; accent-color:var(--dsw-alias-brand-primary,#22d3ee); height:16px; cursor:pointer; }
+      .dwp-progress { display:block; width:100%; height:18px; margin:0; accent-color:var(--dsw-alias-brand-primary,#22d3ee); cursor:pointer; }
       .dwp-progress:disabled { cursor:default; opacity:.5; }
       .dwp-row { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
       .dwp-btn { appearance:none; display:inline-flex; align-items:center; justify-content:center; height:28px; min-width:28px;
