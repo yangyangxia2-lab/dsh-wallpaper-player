@@ -1,6 +1,6 @@
 {
   "name": "dsh-wallpaper-player",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "description": "Browse and play local Wallpaper Engine video and image wallpapers from a DSH settings page.",
   "type": "module",

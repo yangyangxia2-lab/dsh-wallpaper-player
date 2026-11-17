@@ -207,7 +207,7 @@ window.__ModuleLoader__.load({
       )
     }
 
-    function Player({ item, playing, onToggle, videoRef, wrapRef, time, duration, onSeek, onLoaded, onTime, onPlay, onPause, onError, error, volume, muted, loop, speed, onVolume, onToggleMute, onToggleLoop, onSetSpeed, onToggleShuffle, shuffle, onPrev, onNext, onFullscreen }) {
+    function Player({ item, playing, onToggle, videoRef, wrapRef, time, duration, scrubbing, scrubValue, onScrubStart, onScrubEnd, onSeek, onLoaded, onTime, onPlay, onPause, onError, error, volume, muted, loop, speed, onVolume, onToggleMute, onToggleLoop, onSetSpeed, onToggleShuffle, shuffle, onPrev, onNext, onFullscreen }) {
       const video = item && item.kind === 'video' && item.playable
       const visual = item && (item.kind === 'scene' || item.kind === 'web' || (item.kind === 'image' && item.playable))
 
@@ -272,8 +272,12 @@ window.__ModuleLoader__.load({
             min: 0,
             max: duration > 0 ? duration : 0,
             step: 0.1,
-            value: Math.min(time, duration > 0 ? duration : 0),
+            value: scrubbing ? scrubValue : Math.min(time, duration > 0 ? duration : 0),
             onChange: (event) => onSeek(Number(event.target.value)),
+            onPointerDown: onScrubStart,
+            onPointerUp: onScrubEnd,
+            onPointerCancel: onScrubEnd,
+            onKeyUp: onScrubEnd,
             disabled: !video,
             'aria-label': t('player.progress'),
           }),
@@ -344,6 +348,8 @@ window.__ModuleLoader__.load({
       const [shuffle, setShuffle] = React.useState(false)
       const [speed, setSpeed] = React.useState(1)
       const [error, setError] = React.useState(false)
+      const [scrubbing, setScrubbing] = React.useState(false)
+      const [scrubValue, setScrubValue] = React.useState(0)
 
       const videoRef = React.useRef(null)
       const wrapRef = React.useRef(null)
@@ -562,14 +568,27 @@ window.__ModuleLoader__.load({
           time,
           duration,
           onSeek: (value) => {
+            setScrubValue(value)
             const element = videoRef.current
             if (element) element.currentTime = value
+          },
+          scrubbing,
+          scrubValue,
+          onScrubStart: () => {
+            setScrubValue(videoRef.current ? videoRef.current.currentTime : time)
+            setScrubbing(true)
+          },
+          onScrubEnd: () => {
+            setScrubbing(false)
+            if (videoRef.current) setTime(videoRef.current.currentTime || 0)
           },
           onLoaded: (event) => {
             setDuration(Number.isFinite(event.target.duration) ? event.target.duration : 0)
             setError(false)
           },
-          onTime: (event) => setTime(event.target.currentTime || 0),
+          onTime: (event) => {
+            if (!scrubbing) setTime(event.target.currentTime || 0)
+          },
           onPlay: () => setPlaying(true),
           onPause: () => setPlaying(false),
           onError: () => {
